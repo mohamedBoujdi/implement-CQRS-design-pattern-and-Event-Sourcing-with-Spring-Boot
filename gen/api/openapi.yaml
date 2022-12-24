@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  description: productService API
+  title: productService API
+  version: 1.0.0
+servers:
+- url: https://productService
+paths:
+  /products:
+    post:
+      operationId: addProduct
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRestModel'
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                type: string
+          description: OK
+      summary: POST products
+      x-contentType: application/json
+      x-accepts: '*/*'
+components:
+  schemas:
+    BigDecimal:
+      example: {}
+      properties: {}
+      type: object
+    ProductRestModel:
+      example:
+        quantity: 0
+        price: {}
+        name: name
+      properties:
+        name:
+          type: string
+        price:
+          $ref: '#/components/schemas/BigDecimal'
+        quantity:
+          format: int32
+          type: integer
+      type: object
+
