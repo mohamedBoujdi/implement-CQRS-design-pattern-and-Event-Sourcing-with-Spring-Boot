@@ -23,7 +23,7 @@ public class ProductCommandController {
 
     @PostMapping
     public String addProduct(@RequestBody ProductRestModel productRestModel) {
-
+     //debugging purpose
         CreateProductCommand createProductCommand =
                 CreateProductCommand.builder()
                         .productId(UUID.randomUUID().toString())
@@ -32,6 +32,7 @@ public class ProductCommandController {
                         .quantity(productRestModel.getQuantity())
                         .build();
         String result = commandGateway.sendAndWait(createProductCommand);
+        System.out.println(result);
         return result;
     }
 }

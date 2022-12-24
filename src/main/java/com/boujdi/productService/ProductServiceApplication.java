@@ -1,10 +1,13 @@
 package com.boujdi.productService;
 
+import com.boujdi.productService.command.api.exception.ProductServiceEventsErrorHandler;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.common.Registration;
+import org.axonframework.config.EventProcessingConfigurer;
 import org.axonframework.messaging.MessageDispatchInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,33 +22,11 @@ public class ProductServiceApplication {
 		SpringApplication.run(ProductServiceApplication.class, args);
 	}
 
-	@Bean
-	public CommandGateway commandGateway() {
-		return new CommandGateway() {
-			@Override
-			public <C, R> void send(C c, CommandCallback<? super C, ? super R> commandCallback) {
-
-			}
-
-			@Override
-			public <R> R sendAndWait(Object o) {
-				return null;
-			}
-
-			@Override
-			public <R> R sendAndWait(Object o, long l, TimeUnit timeUnit) {
-				return null;
-			}
-
-			@Override
-			public <R> CompletableFuture<R> send(Object o) {
-				return null;
-			}
-
-			@Override
-			public Registration registerDispatchInterceptor(MessageDispatchInterceptor<? super CommandMessage<?>> messageDispatchInterceptor) {
-				return null;
-			}
-		};
+	@Autowired
+	public void configure(EventProcessingConfigurer configurer) {
+		configurer.registerListenerInvocationErrorHandler(
+				"product",
+				configuration -> new ProductServiceEventsErrorHandler()
+		);
 	}
 }
